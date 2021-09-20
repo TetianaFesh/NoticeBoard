@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 
-$("#signupModal").click(function () {
+/*$("#signupModal").click(function () {
         
         $("#signup-modal-content").fadeIn();
     });
@@ -21,4 +21,4 @@ $(document).mouseup(function () {
 
 $("#creatbtn").click(function () {
     $("#signup-modal-content").fadeIn();
-});
+});*/

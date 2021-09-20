@@ -33,10 +33,10 @@
                             @Html.ActionLink("Notices", "Index", "Notices", null, new { @class = "nav-link text-dark" })
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" id="loginModal">Log In</a>
+                            <a class="nav-link text-dark" data-toggle="modal" data-target="#loginModal">Log In</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" id="signupModal">Sign Up</a>
+                            <a class="nav-link text-dark" data-toggle="modal" data-target="#signupModal">Sign Up</a>
                         </li>
                     </ul>
                 </div>
@@ -50,7 +50,7 @@
 
             <!-- LOGIN MODAL-->
 
-            <div class="modal" tabindex="-1" role="dialog" id="login-modal-content">
+            <div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
 
                 <div class="modal-dialog" role="document">
 
@@ -65,13 +65,13 @@
                                 {
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" style="margin: 10px;"></span></div>
+                                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
                                             @Html.TextBox("Email", "", new { name = "email", id = "email", type = "email", @class = "form-control input-lg", placeholder = "Enter Email" })
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-pencil" style="margin: 10px;"></span></div>
+                                            <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
                                             @Html.TextBox("Password", "", new { name = "password", id = "login-password", type = "password", @class = "form-control input-lg", placeholder = "Enter Password" })
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
             <!--  REGISTER MODAL -->
 
 
-            <div class="modal" tabindex="-1" role="dialog" id="signup-modal-content">
+            <div class="modal fade" tabindex="-1" role="dialog" id="signupModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
