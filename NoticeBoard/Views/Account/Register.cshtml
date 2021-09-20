@@ -1,0 +1,57 @@
+﻿@model Entities.Model.RegisterModel 
+@{ 
+    ViewData["Title"] = "Register";
+}
+
+<div class="modal" tabindex="-1" role="dialog" id="signup-modal-content">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Signup Now!</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="Signin-Form" role="form" asp-controller="Users" asp-action="Create">
+                    @using (Html.BeginForm("Create", "User", FormMethod.Post))
+                    {
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" style="margin: 10px;"></span></div>
+                            <input asp-for="Name" name="name" id="name" class="form-control input-lg" placeholder="Enter Name" required data-parsley-type="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                            <input asp-for="Surname" name="surname" id="surname" class="form-control input-lg" placeholder="Enter Surname" required data-parsley-type="surname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                            <input asp-for="Telefon" name="Telefon" id="phonenumber" class="form-control input-lg" placeholder="Enter phonenumber" required data-parsley-type="phonenumber">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                            <input asp-for="Password" name="password" id="passwd" type="password" class="form-control input-lg" placeholder="Enter Password" required data-parsley-length="[6, 10]" data-parsley-trigger="keyup">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                            <input name="password" id="confirm-passwd" type="password" class="form-control input-lg" placeholder="Retype Password" required data-parsley-equalto="#passwd" data-parsley-trigger="keyup">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block btn-lg" value="Create" id="creatbtn">CREATE ACCOUNT!</button>
+                    }
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!-- Футер Signup -->
+
+            </div>
+        </div>
+    </div>
+</div>

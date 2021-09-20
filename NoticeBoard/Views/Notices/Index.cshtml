@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Entities.Model.Notice>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create"><span class="glyphicon glyphicon-plus"></span></a>
+</p>
+
+<ul id="notes">
+        @foreach (var item in Model)
+        {
+    <li>
+        <a>
+            <h2>
+                @Html.DisplayFor(modelItem => item.Date)
+            </h2>
+            <p> @Html.DisplayFor(modelItem => item.Text)</p>
+        </a>
+       <!-- <a>
+            @Html.DisplayFor(modelItem => item.UserId)
+        </a>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->
+    </li>
+        }
+</ul>

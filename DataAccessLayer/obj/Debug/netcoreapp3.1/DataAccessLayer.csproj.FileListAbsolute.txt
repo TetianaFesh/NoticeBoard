@@ -1,0 +1,15 @@
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.deps.json
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.dll
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.pdb
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.csprojAssemblyReference.cache
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.AssemblyInfoInputs.cache
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.AssemblyInfo.cs
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.dll
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.pdb
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.runtimeconfig.json
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.runtimeconfig.dev.json
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\Entities.dll
+D:\NoticeBoard\DataAccessLayer\bin\Debug\netcoreapp3.1\Entities.pdb
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.csproj.CopyComplete
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.csproj.CoreCompileInputs.cache
+D:\NoticeBoard\DataAccessLayer\obj\Debug\netcoreapp3.1\DataAccessLayer.genruntimeconfig.cache
