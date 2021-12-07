@@ -1,10 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - NoticeBoard</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/font-glyphicons.css">
     <link href="http://fonts.googleapis.com/css?family=Marck+Script&amp;subset=latin,cyrillic"
@@ -14,43 +18,62 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NoticeBoard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">NoticeBoard</a>
+                <div class="collapse navbar-collapse d-sm-inline-flex flex-sm-row-reverse" id="myNavbar">
+                    <ul class="nav navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Notices", "Index", "Notices", null, new { @class = "nav-link text-dark" })
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" data-toggle="modal" data-target="#loginModal">Log In</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" data-toggle="modal" data-target="#signupModal">Sign Up</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Notices", "Index", "Notices", null)
+                            </li>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Users" asp-action="Index">Users</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a asp-controller="Users" asp-action="Profile" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Profile</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Logout">Sign out</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a style="color: white;" data-toggle="modal" data-target="#loginModal"><span style="color: white;" class="glyphicon glyphicon-log-in"></span> Log In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="color: white;" data-toggle="modal" data-target="#signupModal"><span style="color: white;" class="glyphicon glyphicon-user"></span> Sign Up</a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    
+
+
     <div class="container">
         <main role="main" class="pb-3">
 
-
             <!-- LOGIN MODAL-->
 
-            <div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
+            <div style="position: relative;" class="modal fade" tabindex="-1" role="dialog" id="loginModal">
 
                 <div class="modal-dialog" role="document">
 
@@ -60,23 +83,21 @@
                             <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Login Now!</h4>
                         </div>
                         <div class="modal-body">
-                            <form method="post" id="Login-Form" role="form">
-                                @using (Html.BeginForm("Create", "Users", FormMethod.Post))
-                                {
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-                                            @Html.TextBox("Email", "", new { name = "email", id = "email", type = "email", @class = "form-control input-lg", placeholder = "Enter Email" })
-                                        </div>
+                            <form method="post" id="Login-Form" role="form" asp-action="Login" asp-controller="Account">
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                                        @Html.TextBox("Email", "", new { name = "email", id = "email", type = "email", @class = "form-control input-lg", placeholder = "Enter Email" })
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
-                                            @Html.TextBox("Password", "", new { name = "password", id = "login-password", type = "password", @class = "form-control input-lg", placeholder = "Enter Password" })
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
+                                        @Html.TextBox("Password", "", new { name = "password", id = "login-password", type = "password", @class = "form-control input-lg", placeholder = "Enter Password" })
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block btn-lg">LOGIN</button>
-                                }
+                                </div>
+                                <button type="submit" class="btn btn-success btn-block btn-lg">LOGIN</button>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -91,7 +112,7 @@
             <!--  REGISTER MODAL -->
 
 
-            <div class="modal fade" tabindex="-1" role="dialog" id="signupModal">
+            <div style="position: relative;" class="modal fade" tabindex="-1" role="dialog" id="signupModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
@@ -99,41 +120,47 @@
                             <h4 class="modal-title"><span class="glyphicon glyphicon-lock"></span> Signup Now!</h4>
                         </div>
                         <div class="modal-body">
-                            <form method="post" id="Signin-Form" role="form" asp-controller="Users" asp-action="Create">
-                                @using (Html.BeginForm("Create", "User", FormMethod.Post))
-                                {
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
-                                            @Html.TextBox("Name", "", new { name = "name", id = "name", type = "text", @class = "form-control input-lg", placeholder = "Enter Name" })
-                                        </div>
+                            <form method="post" id="Signin-Form" role="form" asp-action="Register" asp-controller="Account">
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
+                                        @Html.TextBox("Name", "", new { name = "name", id = "name", type = "text", @class = "form-control input-lg", placeholder = "Enter Name" })
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
-                                            @Html.TextBox("Surname", "", new { name = "surname", id = "surname", type = "text", @class = "form-control input-lg", placeholder = "Enter Surname" })
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></div>
+                                        @Html.TextBox("Surname", "", new { name = "surname", id = "surname", type = "text", @class = "form-control input-lg", placeholder = "Enter Surname" })
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
-                                            @Html.TextBox("Telefone", "", new { name = "phonenumber", id = "phonenumber", type = "text", @class = "form-control input-lg", placeholder = "Enter phonenumber" })
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
+                                        @Html.TextBox("Telefon", "", new { name = "phonenumber", id = "phonenumber", type = "text", @class = "form-control input-lg", placeholder = "Enter phonenumber" })
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                                            @Html.TextBox("Password", "", new { name = "password", id = "password", type = "password", @class = "form-control input-lg", placeholder = "Enter password" })
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                                        @Html.TextBox("Email", "", new { name = "email", id = "email", type = "email", @class = "form-control input-lg", placeholder = "Enter Email" })
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                                            <input name="password" id="confirm-passwd" type="password" class="form-control input-lg" placeholder="Retype Password" required data-parsley-equalto="#passwd" data-parsley-trigger="keyup">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                                        @Html.TextBox("Password", "", new { name = "password", id = "password", type = "password", @class = "form-control input-lg", placeholder = "Enter password" })
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block btn-lg" value="Create" id="creatbtn">CREATE ACCOUNT!</button>
-                                }
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                                        @Html.TextBox("ConfirmPassword", "", new { name = "confirm_password", id = "confirm-password", type = "password", @class = "form-control input-lg", placeholder = "Retype Password" })
+
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-block btn-lg" value="Create" id="creatbtn">CREATE ACCOUNT!</button>
+
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -145,9 +172,6 @@
             </div>
 
 
-
-
-
             @RenderBody()
 
 
@@ -156,7 +180,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - NoticeBoard - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - NoticeBoard
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

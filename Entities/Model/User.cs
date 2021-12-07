@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Entities.Model
 {
@@ -9,6 +10,9 @@ namespace Entities.Model
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Password { get; set; }
+        [DisplayName("Phone number")]
         public string Telefon { get; set; }
+        public string Email { get; set; }
+        public int? Admin { get; set; }
     }
 }

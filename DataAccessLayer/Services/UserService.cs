@@ -18,7 +18,7 @@ namespace DataAccessLayer.Services
 
         public bool Login(User user)
         {
-            User _user = _context.User.Find(user.Telefon);
+            User _user = _context.User.Find(user.Email);
             if (_user.Password == user.Password) {  
 
                 return true;
@@ -26,9 +26,9 @@ namespace DataAccessLayer.Services
             return false;
         }
 
-        public User GetUser()
+        public User GetUser(int? id)
         {
-            return _context.User.Find();
+            return _context.User.Find(id);
         }
     }
 }

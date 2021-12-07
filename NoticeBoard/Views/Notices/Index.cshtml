@@ -1,29 +1,47 @@
 ﻿@model IEnumerable<Entities.Model.Notice>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notices";
+    var type = new SelectList(new List<String> { "Give", "Borrow", "Lend", "Buy", "Sell", "Gift", "Get", "None" });
+    var itemType = new SelectList(new List<String> { "Car", "No item type", "Coods", "Clothes", "Furniture" });
 }
 
-<p>
-    <a asp-action="Create"><span class="glyphicon glyphicon-plus"></span></a>
-</p>
+<div class="row">
+    <div class="col-sm-1">
+        <a style="color: #f4511e;" asp-action="Create"><h1 class="glyphicon glyphicon-plus"></h1></a>
+    </div>
+    <div class="col-sm-11">
+        <div class="container" style="padding: 20px;">
+            <form asp-action="Search">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.DropDownList("Type", type as SelectList, new { @class = "form-control", style="position: relative;"})
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.DropDownList("ItemType", itemType as SelectList, new { @class = "form-control", style = "position: relative;" })
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="submit" value="Search" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <ul id="notes">
-        @foreach (var item in Model)
-        {
-    <li>
-        <a asp-action="Details" asp-route-id="@item.Id">
-            <h2>
-                @Html.DisplayFor(modelItem => item.Date)
-            </h2>
-            <p> @Html.DisplayFor(modelItem => item.Text)</p>
-        </a>
-       <!-- <a>
-            @Html.DisplayFor(modelItem => item.UserId)
-        </a>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->
-    </li>
-        }
+    @foreach (var item in Model)
+    {
+        <li>
+            <a asp-action="Details" asp-route-id="@item.Id">
+                <h2>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </h2>
+                <p> @Html.DisplayFor(modelItem => item.Text)</p>
+            </a>
+        </li>
+    }
 </ul>

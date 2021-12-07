@@ -1,17 +1,10 @@
-﻿@model Entities.Model.Notice
+﻿@model NoticeBoard.Dto.NoticeDto
 
 @{
-   
+    ViewData["Title"] = "Edit notice";
+    var type = new SelectList(new List<String> { "Give", "Borrow", "Lend", "Buy", "Sell", "Gift", "Get" });
+    var itemType = new SelectList(new List<String> { "Car", "No item type", "Goods", "Clothes", "Furniture" });
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
 
 <h4>Notice</h4>
 <hr />
@@ -20,20 +13,21 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Date" />
             <div class="form-group">
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
+                <label asp-for="Type" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Type, type as SelectList, new { @class = "form-control" })
+                <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <label asp-for="ItemType" class="control-label"></label>
+                @Html.DropDownListFor(model => model.ItemType, itemType as SelectList, new { @class = "form-control" })
+                <span asp-validation-for="ItemType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -45,6 +39,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-</body>
-</html>

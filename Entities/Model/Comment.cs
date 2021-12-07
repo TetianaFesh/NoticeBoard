@@ -9,5 +9,6 @@ namespace Entities.Model
         public string Text { get; set; }
         public int UserId { get; set; }
         public int NoticeId { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

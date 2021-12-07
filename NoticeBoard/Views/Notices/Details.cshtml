@@ -1,45 +1,75 @@
-﻿@model Entities.Model.Notice
+﻿@model NoticeBoard.Dto.FullNotice
+@using System.Security.Claims
 
 @{
-    
+    ViewData["Title"] = Model.Text;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-
 <div>
-    <h4>Notice</h4>
+    <a style="color: #f4511e;" asp-action="Index">
+        <h1 class="glyphicon glyphicon-arrow-left"></h1>
+    </a>
+</div>
+<div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Text)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-    </dl>
+    <div class="container">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-sm-11">
+                    <h1> @Html.DisplayFor(model => model.Text)</h1>
+                </div>
+                @if (int.Parse(@User.FindFirstValue(ClaimTypes.NameIdentifier)) == @Model.UserId || User.IsInRole("admin"))
+                {
+                    <div class="col-sm-1">
+                        <a style="color: black;padding: 3px; text-decoration: none;" asp-controller="Notices" asp-action="Edit" asp-route-id="@Model.NoticeId">
+                            <h2 class="glyphicon glyphicon-pencil"></h2>
+                        </a>
+                        <a style="color: black; padding: 3px;" asp-action="Delete" asp-controller="Notices" asp-route-id="@Model.NoticeId">
+                            <h2 class="glyphicon glyphicon-trash"></h2>
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    Created by: @Html.DisplayFor(model => model.UserName)
+                </div>
+                <div class="col-sm-1">
+                    @Html.DisplayFor(model => model.Date)
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    <h1>Comments</h1>
+    <blockquote>
+        <form method="post" asp-action="Create" asp-controller="Comment">
+            <div class="row">
+                <div class="col-sm-10">
+                    @Html.TextArea("Text", "", new { name = "commentText", id = "commentText", type = "text", @class = "form-control", rows = "3" })
+                </div>
+                @Html.Hidden("UserId", @User.FindFirstValue(ClaimTypes.NameIdentifier))
+                @Html.Hidden("NoticeId", @Model.NoticeId)
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <input type="submit" value="Leave comment" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+        @foreach (var commnet in Model.FullComments)
+        {
+            <p>
+                @commnet.CommentText
+            </p>
+            <footer>
+                @commnet.UserName
+            </footer>
+            <hr />
+        }
+    </blockquote>
 </div>
-</body>
-</html>
+
+

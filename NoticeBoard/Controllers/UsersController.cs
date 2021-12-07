@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Model;
 using DataAccessLayer.Interfaces;
+using NoticeBoard.Dto;
+//using NoticeBoard.Models;
 
 namespace NoticeBoard.Controllers
 {
@@ -32,14 +34,31 @@ namespace NoticeBoard.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = _userService.GetUser(id);
+
             if (user == null)
             {
                 return NotFound();
             }
 
             return View(user);
+        }
+
+        public async Task<IActionResult> Profile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = _userService.GetUser(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View("Profile", user);
         }
 
         // GET: Users/Create
@@ -63,18 +82,6 @@ namespace NoticeBoard.Controllers
             return View(user);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind("Telefon, Password")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                 _userService.Login(user);
-                return RedirectToAction("Index", "Home");
-            }
-            return View(user);
-        }
-
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -83,7 +90,7 @@ namespace NoticeBoard.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = _userService.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -96,7 +103,7 @@ namespace NoticeBoard.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Password,Telefon")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Password,Email,Telefon")] User user)
         {
             if (id != user.Id)
             {
@@ -107,6 +114,14 @@ namespace NoticeBoard.Controllers
             {
                 try
                 {
+                    var useRole = _context.User.Where(m => m.Id == id).Select(m => m.Admin);
+                    if (useRole.FirstOrDefault() == 1)
+                    {
+                        user.Admin = 1;
+                    }
+                    else{
+                        user.Admin = 0;
+                    }
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -121,7 +136,7 @@ namespace NoticeBoard.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Notices");
             }
             return View(user);
         }
@@ -159,5 +174,23 @@ namespace NoticeBoard.Controllers
         {
             return _context.User.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> SetAdminRole(int id)
+        {
+            var user = _userService.GetUser(id);
+            user.Admin = 1;
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeleteFromAdmin(int id)
+        {
+            var user = _userService.GetUser(id);
+            user.Admin = 0;
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }   
     }
 }

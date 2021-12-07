@@ -4,11 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div>
+    <a style="color: #f4511e;" asp-action="Create"><h1 class="glyphicon glyphicon-plus"></h1></a>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -17,12 +15,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Surname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefon)
             </th>
             <th></th>
         </tr>
@@ -37,15 +29,14 @@
                 @Html.DisplayFor(modelItem => item.Surname)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefon)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                @if (item.Admin == 0 || item.Admin == null)
+                {<a asp-action="SetAdminRole" asp-route-id="@item.Id">Give admin role</a> }
+                else
+                {
+                    <a asp-action="DeleteFromAdmin" asp-route-id="@item.Id">Delete from admin</a>
+                }
             </td>
         </tr>
 }

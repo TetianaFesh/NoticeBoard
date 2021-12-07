@@ -186,3 +186,6 @@ D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\NoticeBoard.csproj.CoreCompil
 D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\scopedcss\bundle\NoticeBoard.styles.css
 D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\NoticeBoard.genruntimeconfig.cache
 D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
+D:\NoticeBoard\NoticeBoard\bin\Debug\netcoreapp3.1\AutoMapper.dll
+D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\Notices\ErrorPage.cshtml.g.cs
+D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\Users\Profile.cshtml.g.cs

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Entities.Model;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NoticeBoard
 {
@@ -26,6 +28,12 @@ namespace NoticeBoard
 
             services.AddDbContext<NoticeBoardContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
 
             services.AddTransient<IUserService, UserService>();
         }
@@ -48,7 +56,8 @@ namespace NoticeBoard
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();    // аутентификация
+            app.UseAuthorization();     // авторизация
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,28 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -61,7 +39,6 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-
     font-family: arial,sans-serif;
     font-size: 120%;
     margin: 3em;
@@ -191,4 +168,29 @@ h2, p {
     -o-transform: scale(1.25);
     position: relative;
     z-index: 5;
-} 
+}
+
+.navbar {
+    margin-bottom: 0;
+    background-color: #f4511e;
+    z-index: 9999;
+    border: 0;
+    font-size: 12px;
+    line-height: 1.42857143;
+    letter-spacing: 4px;
+    border-radius: 0;
+}
+
+.navbar li a, .navbar .navbar-brand {
+    color: #fff;
+}
+
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #f4511e;
+    background-color: #fff;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff;
+}

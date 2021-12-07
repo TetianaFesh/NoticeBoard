@@ -6,3 +6,13 @@ NoticeBoard/.vs/NoticeBoard/v16/.suo
 *.dll
 *.pdb
 *.cache
+*.dll
+*.ide
+*.lock
+*.v2
+*.dll
+*.pdb
+*.cache
+NoticeBoard/.vs/NoticeBoard/DesignTimeBuild/.dtbcache
+*.testlog
+*.manifest

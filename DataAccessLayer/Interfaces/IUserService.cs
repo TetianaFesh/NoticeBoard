@@ -9,5 +9,6 @@ namespace DataAccessLayer.Interfaces
     {
         void Create(User item);
         bool Login(User item);
+        User GetUser(int? id);
     }
 }

@@ -9,5 +9,7 @@ namespace Entities.Model
         public string Text { get; set; }
         public DateTime Date { get; set; }
         public int UserId { get; set; }
+        public int FNoticeType { get; set; }
+        public int? FNoticeItemType { get; set; }
     }
 }

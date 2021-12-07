@@ -16,6 +16,9 @@ namespace Entities.Model
         [Required(ErrorMessage = "Phonenumber field is empty")]
         public string Telefon { get; set; }
 
+        [Required(ErrorMessage = "Email field is empty")]
+        public string Email { get; set; }
+
         [Required(ErrorMessage = "Password field is empty")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
