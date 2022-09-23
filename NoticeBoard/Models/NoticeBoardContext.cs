@@ -78,7 +78,7 @@ namespace NoticeBoard.Models
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasColumnType("uniqueidentifier");
 
                 entity.Property(e => e.Surname)
                     .IsRequired()

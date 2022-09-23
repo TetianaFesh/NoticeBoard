@@ -16,3 +16,5 @@ NoticeBoard/.vs/NoticeBoard/v16/.suo
 NoticeBoard/.vs/NoticeBoard/DesignTimeBuild/.dtbcache
 *.testlog
 *.manifest
+DataAccessLayer\bin\
+DataAccessLayer\obj\

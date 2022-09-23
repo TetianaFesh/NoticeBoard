@@ -189,3 +189,4 @@ D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.
 D:\NoticeBoard\NoticeBoard\bin\Debug\netcoreapp3.1\AutoMapper.dll
 D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\Notices\ErrorPage.cshtml.g.cs
 D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\Users\Profile.cshtml.g.cs
+D:\NoticeBoard\NoticeBoard\obj\Debug\netcoreapp3.1\Razor\Views\NoticeItemType\Index.cshtml.g.cs

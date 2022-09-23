@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Entities.Model;
 using DataAccessLayer.Interfaces;
 using NoticeBoard.Dto;
+using System.Text;
+using System.Security.Cryptography;
+using System;
 //using NoticeBoard.Models;
 
 namespace NoticeBoard.Controllers
@@ -72,11 +75,33 @@ namespace NoticeBoard.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Password,Telefon")] User user)
+        public async Task<IActionResult> Create(int Id, string Name, string Surname, string Password, string Telefon, string Email)
         {
+
+            User user = _context.User.FirstOrDefault(u => u.Email == Email);
+            //переводим строку в байт-массим  
+            byte[] bytes = Encoding.Unicode.GetBytes(Password);
+            //создаем объект для получения средст шифрования  
+            MD5CryptoServiceProvider CSP = new MD5CryptoServiceProvider();
+            //вычисляем хеш-представление в байтах  
+            byte[] byteHash = CSP.ComputeHash(bytes);
+            string hash = string.Empty;
+            //формируем одну цельную строку из массива  
+            foreach (byte b in byteHash)
+                hash += string.Format("{0:x2}", b);
+
             if (ModelState.IsValid)
             {
-                 _userService.Create(user);
+                if (user == null)
+                {
+                    user = new User { Name = Name, Surname = Surname, Telefon = Telefon, Email = Email, Password = new Guid(hash), Admin = 0 };
+
+                    _userService.Create(user);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                    ModelState.AddModelError("", "User with this email already exist.");
                 return RedirectToAction("Index", "Home");
             }
             return View(user);

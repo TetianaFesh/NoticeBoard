@@ -25,6 +25,12 @@ namespace NoticeBoard.Controllers
         // GET: Notices
         public async Task<IActionResult> Index()
         {
+            SelectList selectListNoticeType = new SelectList(_context.NoticeType, "Id", "TypeName");
+            SelectList selectListNoticeItemType = new SelectList(_context.NoticeItemType, "Id", "Name");
+
+            ViewBag.NoticeType = selectListNoticeType;
+            ViewBag.NoticeItemType = selectListNoticeItemType;
+
             return View(await _context.Notice.OrderByDescending(m => m.Date).ToListAsync());
         }
 
@@ -35,6 +41,12 @@ namespace NoticeBoard.Controllers
             {
                 return NotFound();
             }
+
+            SelectList selectListNoticeType = new SelectList(_context.NoticeType, "Id", "TypeName");
+            SelectList selectListNoticeItemType = new SelectList(_context.NoticeItemType, "Id", "Name");
+
+            ViewBag.NoticeType = selectListNoticeType;
+            ViewBag.NoticeItemType = selectListNoticeItemType;
 
             var notice = await _context.Notice 
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -72,6 +84,12 @@ namespace NoticeBoard.Controllers
         // GET: Notices/Create
         public IActionResult Create()
         {
+            SelectList selectListNoticeType = new SelectList(_context.NoticeType, "Id", "TypeName");
+            SelectList selectListNoticeItemType = new SelectList(_context.NoticeItemType, "Id", "Name");
+
+            ViewBag.NoticeType = selectListNoticeType;
+            ViewBag.NoticeItemType = selectListNoticeItemType;
+
             return View();
         }
 
@@ -82,24 +100,13 @@ namespace NoticeBoard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id, Name, Type, ItemType")] NoticeDto noticeDto)
         {
-            Dictionary<int, String> type = new Dictionary<int, string>(7);
-            foreach(var typeFromDb in _context.NoticeType.ToList())
-            {
-                type.Add(typeFromDb.Id, typeFromDb.TypeName);
-            }
-            Dictionary<int, String> itemType = new Dictionary<int, string>();
-            foreach (var typeFromDb in _context.NoticeItemType.ToList())
-            {
-                itemType.Add(typeFromDb.Id, typeFromDb.Name);
-            }
+
             Notice notice = new Notice();
             if (ModelState.IsValid)
             { 
                 notice.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                notice.FNoticeType = type.FirstOrDefault(m => m.Value == noticeDto.Type).Key;
-                //notice.FNoticeType = _context.NoticeType.FirstOrDefault(m => m.TypeName == noticeDto.Type.ToString()).Id;
-                notice.FNoticeItemType = itemType.FirstOrDefault(m => m.Value == noticeDto.ItemType).Key;
-                //notice.FNoticeItemType = _context.NoticeItemType.FirstOrDefault(m => m.Name == noticeDto.ItemType.ToString()).Id;
+                notice.FNoticeType = int.Parse(noticeDto.Type);
+                notice.FNoticeItemType = int.Parse(noticeDto.ItemType);
                 notice.Text = String.IsNullOrEmpty(noticeDto.Name) ? "Test faild empty text field" : noticeDto.Name;
                 notice.Date = DateTime.Now;
                 _context.Add(notice);
@@ -122,13 +129,18 @@ namespace NoticeBoard.Controllers
             {
                 return NotFound();
             }
+
+            SelectList selectListNoticeType = new SelectList(_context.NoticeType, "Id", "TypeName", notice.FNoticeType);
+            SelectList selectListNoticeItemType = new SelectList(_context.NoticeItemType, "Id", "Name", notice.FNoticeItemType);
+
+            ViewBag.NoticeType = selectListNoticeType;
+            ViewBag.NoticeItemType = selectListNoticeItemType;
+
             NoticeDto noticeDto = new NoticeDto
             {
                 Id = notice.Id,
                 Date = notice.Date,
-                ItemType = _context.NoticeItemType.Where(m => m.Id == notice.FNoticeItemType).Select(m => m.Name).SingleOrDefault(),
                 Name = notice.Text,
-                Type = _context.NoticeType.Where(m => m.Id == notice.FNoticeType).Select(m => m.TypeName).SingleOrDefault()
             };
             return View(noticeDto);
         }
@@ -153,8 +165,8 @@ namespace NoticeBoard.Controllers
                     notice.Id = noticeDto.Id;
                     notice.Date = noticeDto.Date;
                     notice.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    notice.FNoticeType = _context.NoticeType.Where(m => m.TypeName == noticeDto.ItemType).Select(m => m.Id).SingleOrDefault();
-                    notice.FNoticeItemType = _context.NoticeItemType.Where(m => m.Name == noticeDto.ItemType).Select(m => m.Id).SingleOrDefault();
+                    notice.FNoticeType = int.Parse(noticeDto.Type);
+                    notice.FNoticeItemType = int.Parse(noticeDto.ItemType);
                     notice.Text = String.IsNullOrEmpty(noticeDto.Name) ? "Test faild empty text field" : noticeDto.Name;
                     _context.Update(notice);
                     await _context.SaveChangesAsync();
@@ -211,12 +223,18 @@ namespace NoticeBoard.Controllers
 
         public async Task<IActionResult> Search(String Type, String ItemType)
         {
+            SelectList selectListNoticeType = new SelectList(_context.NoticeType, "Id", "TypeName");
+            SelectList selectListNoticeItemType = new SelectList(_context.NoticeItemType, "Id", "Name");
+
+            ViewBag.NoticeType = selectListNoticeType;
+            ViewBag.NoticeItemType = selectListNoticeItemType;
+
             var typeId = 0;
             var itemTypeId = 0;
             if (Type != "None" && ItemType != "None")
             {
-                typeId = _context.NoticeType.FirstOrDefault(m => m.TypeName == Type).Id;
-                itemTypeId = _context.NoticeItemType.FirstOrDefault(m => m.Name == ItemType).Id;
+                typeId = _context.NoticeType.FirstOrDefault(m => m.Id.ToString() == Type).Id;
+                itemTypeId = _context.NoticeItemType.FirstOrDefault(m => m.Id.ToString() == ItemType).Id;
 
                 var notices = _context.Notice.Where(m => m.FNoticeType == typeId && m.FNoticeItemType == itemTypeId);
                 if(notices.Count() == 0)

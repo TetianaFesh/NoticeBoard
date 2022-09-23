@@ -2,8 +2,6 @@
 
 @{
     ViewData["Title"] = "Notices";
-    var type = new SelectList(new List<String> { "Give", "Borrow", "Lend", "Buy", "Sell", "Gift", "Get", "None" });
-    var itemType = new SelectList(new List<String> { "Car", "No item type", "Coods", "Clothes", "Furniture" });
 }
 
 <div class="row">
@@ -15,10 +13,10 @@
             <form asp-action="Search">
                 <div class="row">
                     <div class="col-sm-4">
-                        @Html.DropDownList("Type", type as SelectList, new { @class = "form-control", style="position: relative;"})
+                        @Html.DropDownList("Type", ViewBag.NoticeType as SelectList, "Select", new { @class = "form-control", style="position: relative;"})
                     </div>
                     <div class="col-sm-4">
-                        @Html.DropDownList("ItemType", itemType as SelectList, new { @class = "form-control", style = "position: relative;" })
+                        @Html.DropDownList("ItemType", ViewBag.NoticeItemType as SelectList, "Select", new { @class = "form-control", style = "position: relative;" })
                     </div>
                     <div class="col-sm-4">
                         <div class="input-group">
